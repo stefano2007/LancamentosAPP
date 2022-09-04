@@ -24,20 +24,20 @@ namespace Lancamento.Api.Controllers
 
         // GET: api/TiposLancamentos
         [HttpGet]
-        public ActionResult<IEnumerable<TipoLancamento>> GetTiposLancamentos()
+        public async Task<ActionResult<IEnumerable<TipoLancamento>>> GetTiposLancamentos()
         {
-            return _repo.BuscatTodos().ToList();
+            return  Ok(await _repo.BuscatTodos());
         }
 
         // GET: api/TiposLancamentos/5
         [HttpGet("{id}")]
-        public ActionResult<TipoLancamento> GetTipoLancamento(int id)
+        public async Task<ActionResult<TipoLancamento>> GetTipoLancamento(int id)
         {
           if (id <= 0)
           {
               return NotFound();
           }
-            var tipoLancamento = _repo.BuscarPorId(id);
+            var tipoLancamento = await _repo.BuscarPorId(id);
 
             if (tipoLancamento == null)
             {
@@ -50,17 +50,20 @@ namespace Lancamento.Api.Controllers
         // PUT: api/TiposLancamentos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult PutTipoLancamento(int id, TipoLancamento tipoLancamento)
+        public async Task<IActionResult> PutTipoLancamento(int id, TipoLancamento tipoLancamento)
         {
             if (id != tipoLancamento.Id)
             {
                 return BadRequest();
-            }
-
-            
+            }            
 
             try
             {
+                if (!TipoLancamentoExists(id))
+                {
+                    return BadRequest();
+                }
+
                 _repo.Atualizar(tipoLancamento);
             }
             catch (DbUpdateConcurrencyException)
@@ -81,26 +84,26 @@ namespace Lancamento.Api.Controllers
         // POST: api/TiposLancamentos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<TipoLancamento> PostTipoLancamento(TipoLancamento tipoLancamento)
+        public async Task<ActionResult<TipoLancamento>> PostTipoLancamento(TipoLancamento tipoLancamento)
         {
           if (_repo == null)
           {
               return Problem("Entity set 'LancamentoContext.TiposLancamentos'  is null.");
           }
-            _repo.Criar(tipoLancamento);
+            await _repo.Criar(tipoLancamento);
 
             return CreatedAtAction("GetTipoLancamento", new { id = tipoLancamento.Id }, tipoLancamento);
         }
 
         // DELETE: api/TiposLancamentos/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteTipoLancamento(int id)
+        public async Task<IActionResult> DeleteTipoLancamento(int id)
         {
             if (_repo == null)
             {
                 return NotFound();
             }
-            var tipoLancamento = _repo.BuscarPorId(id);
+            var tipoLancamento = await _repo.BuscarPorId(id);
             if (tipoLancamento == null)
             {
                 return NotFound();

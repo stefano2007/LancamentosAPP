@@ -1,4 +1,6 @@
 ﻿using Lancamento.Api.Data.Entidades;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Lancamento.Api.Data.Repositorio
 {
@@ -9,32 +11,33 @@ namespace Lancamento.Api.Data.Repositorio
         {
             _context = context;
         }
-        public void Atualizar(Usuario entity)
+        public async void Atualizar(Usuario entity)
         {
-            _context.Update(entity);
-            _context.SaveChanges();
+            _context.Usuarios.Update(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Usuario BuscarPorId(int id)
+        public async Task<Usuario> BuscarPorId(int id)
         {
-            return _context
+            return await _context
                     .Usuarios
-                    .FirstOrDefault(p => p.Id == id);
+                    .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public IEnumerable<Usuario> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<Usuario>> BuscatTodos(int limite = 25, int salto = 0)
         {
-            return _context
+            return await _context
                     .Usuarios
                     .Take(limite)
                     .Skip(salto)
-                    .ToList();
+                    .ToListAsync();
         }
 
-        public void Criar(Usuario entity)
+        public async Task<Usuario> Criar(Usuario entity)
         {
             _context.Usuarios.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public bool Deletar(Usuario entity)

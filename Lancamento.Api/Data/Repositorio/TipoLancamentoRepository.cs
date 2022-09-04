@@ -12,30 +12,32 @@ namespace Lancamento.Api.Data.Repositorio
         }
         public void Atualizar(TipoLancamento entity)
         {
-            _context.Update(entity);
+            _context.TiposLancamentos.Add(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public TipoLancamento BuscarPorId(int id)
+        public async Task<TipoLancamento> BuscarPorId(int id)
         {
-            return _context
+            return await _context
                     .TiposLancamentos
-                    .FirstOrDefault(p => p.Id == id);
+                    .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public IEnumerable<TipoLancamento> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<TipoLancamento>> BuscatTodos(int limite = 25, int salto = 0)
         {
-            return _context
+            return await _context
                     .TiposLancamentos
                     .Take(limite)
                     .Skip(salto)
-                    .ToList();
+                    .ToListAsync();
         }
 
-        public void Criar(TipoLancamento entity)
+        public async Task<TipoLancamento> Criar(TipoLancamento entity)
         {
             _context.TiposLancamentos.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public bool Deletar(TipoLancamento entity)
@@ -48,6 +50,7 @@ namespace Lancamento.Api.Data.Repositorio
         {
             return _context
                     .TiposLancamentos
+                    .AsNoTracking()
                     .Any(p => p.Id == id);
         }
     }

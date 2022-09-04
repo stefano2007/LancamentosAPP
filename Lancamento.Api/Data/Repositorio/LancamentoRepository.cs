@@ -1,4 +1,5 @@
 ﻿using Lancamento.Api.Data.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lancamento.Api.Data.Repositorio
 {
@@ -9,32 +10,33 @@ namespace Lancamento.Api.Data.Repositorio
         {
             _context = context;
         }
-        public void Atualizar(ItemLancamento entity)
+        public async void Atualizar(ItemLancamento entity)
         {
-            _context.Update(entity);
-            _context.SaveChanges();
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        public ItemLancamento BuscarPorId(int id)
+        public async Task<ItemLancamento> BuscarPorId(int id)
         {
-            return _context
+            return await _context
                     .Lancamentos
-                    .FirstOrDefault(p => p.Id == id);
+                    .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public IEnumerable<ItemLancamento> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<ItemLancamento>> BuscatTodos(int limite = 25, int salto = 0)
         {
-            return _context
+            return await _context
                     .Lancamentos
                     .Take(limite)
                     .Skip(salto)
-                    .ToList();
+                    .ToListAsync();
         }
 
-        public void Criar(ItemLancamento entity)
+        public async Task<ItemLancamento> Criar(ItemLancamento entity)
         {
             _context.Lancamentos.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public bool Deletar(ItemLancamento entity)
