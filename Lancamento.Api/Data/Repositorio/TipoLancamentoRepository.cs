@@ -12,7 +12,6 @@ namespace Lancamento.Api.Data.Repositorio
         }
         public void Atualizar(TipoLancamento entity)
         {
-            _context.TiposLancamentos.Add(entity);
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }

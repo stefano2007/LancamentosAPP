@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Lancamento.Api.Data;
 using Lancamento.Api.Data.Entidades;
 using Lancamento.Api.Data.Repositorio;
+using Lancamento.Api.Data.Entidades.DTO;
+using AutoMapper;
 
 namespace Lancamento.Api.Controllers
 {
@@ -16,27 +18,34 @@ namespace Lancamento.Api.Controllers
     public class TiposLancamentosController : ControllerBase
     {
         private readonly ITipoLancamentoRepository _repo;
+        public readonly IMapper _mapper;
 
-        public TiposLancamentosController(ITipoLancamentoRepository repo)
+        public TiposLancamentosController(ITipoLancamentoRepository repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         // GET: api/TiposLancamentos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TipoLancamento>>> GetTiposLancamentos()
+        public async Task<ActionResult<IEnumerable<TipoLancamentoDTO>>> GetTiposLancamentos()
         {
-            return  Ok(await _repo.BuscatTodos());
+
+            var list = await _repo.BuscatTodos();
+
+            var dtos = _mapper.Map<IEnumerable<TipoLancamentoDTO>>(list);
+
+            return Ok(dtos);
         }
 
         // GET: api/TiposLancamentos/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TipoLancamento>> GetTipoLancamento(int id)
+        public async Task<ActionResult<TipoLancamentoDTO>> GetTipoLancamento(int id)
         {
-          if (id <= 0)
-          {
-              return NotFound();
-          }
+            if (id <= 0)
+            {
+                return NotFound();
+            }
             var tipoLancamento = await _repo.BuscarPorId(id);
 
             if (tipoLancamento == null)
@@ -44,27 +53,33 @@ namespace Lancamento.Api.Controllers
                 return NotFound();
             }
 
-            return tipoLancamento;
+            var dto = _mapper.Map<TipoLancamentoDTO>(tipoLancamento);
+
+            return dto;
         }
 
         // PUT: api/TiposLancamentos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoLancamento(int id, TipoLancamento tipoLancamento)
+        public async Task<IActionResult> PutTipoLancamento(int id, TipoLancamentoUpdateDTO dto)
         {
-            if (id != tipoLancamento.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
-            }            
+            }
 
             try
             {
-                if (!TipoLancamentoExists(id))
+                var obj = await _repo.BuscarPorId(id);
+                //if (!TipoLancamentoExists(id))
+                if (obj == null)
                 {
                     return BadRequest();
                 }
 
-                _repo.Atualizar(tipoLancamento);
+                _mapper.Map<TipoLancamentoUpdateDTO, TipoLancamento>(dto, obj);
+
+                _repo.Atualizar(obj);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,15 +99,22 @@ namespace Lancamento.Api.Controllers
         // POST: api/TiposLancamentos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TipoLancamento>> PostTipoLancamento(TipoLancamento tipoLancamento)
+        public async Task<ActionResult<TipoLancamentoDTO>> PostTipoLancamento(TipoLancamentoInsertDTO dto)
         {
-          if (_repo == null)
-          {
-              return Problem("Entity set 'LancamentoContext.TiposLancamentos'  is null.");
-          }
-            await _repo.Criar(tipoLancamento);
+            if (_repo == null)
+            {
+                return Problem("Entity set 'LancamentoContext.TiposLancamentos'  is null.");
+            }
+            var obj = _mapper.Map<TipoLancamento>(dto);
 
-            return CreatedAtAction("GetTipoLancamento", new { id = tipoLancamento.Id }, tipoLancamento);
+            obj.Ativo = true;
+            obj.DataCriacao = DateTime.Now;
+
+            await _repo.Criar(obj);
+
+            var result = _mapper.Map<TipoLancamentoDTO>(obj);
+
+            return CreatedAtAction("GetTipoLancamento", new { id = result.Id }, result);
         }
 
         // DELETE: api/TiposLancamentos/5

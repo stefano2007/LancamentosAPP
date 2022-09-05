@@ -1,10 +1,14 @@
 using Lancamento.Api.Data;
-using Lancamento.Api.Data.Entidades;
+using Lancamento.Api.Data.Entidades.Profiles;
 using Lancamento.Api.Data.Repositorio;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//adicionar Automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -21,7 +25,7 @@ builder.Services.AddDbContext<LancamentoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
     if (builder.Environment.IsDevelopment())
     {
-        options.LogTo(Console.Write, LogLevel.Information);
+        options.LogTo((s) => Debug.Write(s), LogLevel.Information);
     }
 });
 

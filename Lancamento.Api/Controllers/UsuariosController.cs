@@ -22,25 +22,21 @@ namespace Lancamento.Api.Controllers
             _repo = repo;
         }
 
-        // GET: api/Usuarios
+        // GET: api/TiposLancamentos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetTiposLancamentos()
         {
-          if (_repo == null)
-          {
-              return NotFound();
-          }
             return Ok(await _repo.BuscatTodos());
         }
 
-        // GET: api/Usuarios/5
+        // GET: api/TiposLancamentos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-          if (_repo == null)
-          {
-              return NotFound();
-          }
+            if (id <= 0)
+            {
+                return NotFound();
+            }
             var usuario = await _repo.BuscarPorId(id);
 
             if (usuario == null)
@@ -51,7 +47,7 @@ namespace Lancamento.Api.Controllers
             return usuario;
         }
 
-        // PUT: api/Usuarios/5
+        // PUT: api/TiposLancamentos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
@@ -63,6 +59,11 @@ namespace Lancamento.Api.Controllers
 
             try
             {
+                if (!UsuarioExists(id))
+                {
+                    return BadRequest();
+                }
+
                 _repo.Atualizar(usuario);
             }
             catch (DbUpdateConcurrencyException)
@@ -80,21 +81,21 @@ namespace Lancamento.Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Usuarios
+        // POST: api/TiposLancamentos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
-          if (_repo == null)
-          {
-              return Problem("Entity set 'LancamentoContext.Usuarios'  is null.");
-          }
+            if (_repo == null)
+            {
+                return Problem("Entity set 'LancamentoContext.TiposLancamentos'  is null.");
+            }
             await _repo.Criar(usuario);
 
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
         }
 
-        // DELETE: api/Usuarios/5
+        // DELETE: api/TiposLancamentos/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
