@@ -10,6 +10,7 @@ using Lancamento.Api.Data.Entidades;
 using Lancamento.Api.Data.Repositorio;
 using Lancamento.Api.Data.Entidades.DTO;
 using AutoMapper;
+using Lancamento.Api.Services;
 
 namespace Lancamento.Api.Controllers
 {
@@ -17,23 +18,22 @@ namespace Lancamento.Api.Controllers
     [ApiController]
     public class TiposLancamentosController : ControllerBase
     {
-        private readonly ITipoLancamentoRepository _repo;
-        public readonly IMapper _mapper;
+        private readonly TipoLancamentoService _service;
 
-        public TiposLancamentosController(ITipoLancamentoRepository repo, IMapper mapper)
+        public TiposLancamentosController(TipoLancamentoService service)
         {
-            _repo = repo;
-            _mapper = mapper;
+            _service = service;
         }
 
         // GET: api/TiposLancamentos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TipoLancamentoDTO>>> GetTiposLancamentos()
+        public async Task<ActionResult<IEnumerable<TipoLancamentoDTO>>> GetTiposLancamentos(int limite = 25, int salto = 0)
         {
-
-            var list = await _repo.BuscatTodos();
-
-            var dtos = _mapper.Map<IEnumerable<TipoLancamentoDTO>>(list);
+            if (limite > 1000)// no maximo 1000 registros por consulta
+            {
+                limite = 1000;
+            }
+            var dtos = await _service.BuscatTodos(limite, salto);
 
             return Ok(dtos);
         }
@@ -46,14 +46,13 @@ namespace Lancamento.Api.Controllers
             {
                 return NotFound();
             }
-            var tipoLancamento = await _repo.BuscarPorId(id);
 
-            if (tipoLancamento == null)
+            var dto = await _service.BuscarPorId(id);
+
+            if (dto == null)
             {
                 return NotFound();
             }
-
-            var dto = _mapper.Map<TipoLancamentoDTO>(tipoLancamento);
 
             return dto;
         }
@@ -70,16 +69,7 @@ namespace Lancamento.Api.Controllers
 
             try
             {
-                var obj = await _repo.BuscarPorId(id);
-                //if (!TipoLancamentoExists(id))
-                if (obj == null)
-                {
-                    return BadRequest();
-                }
-
-                _mapper.Map<TipoLancamentoUpdateDTO, TipoLancamento>(dto, obj);
-
-                _repo.Atualizar(obj);
+                await _service.Atualizar(dto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -101,18 +91,8 @@ namespace Lancamento.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<TipoLancamentoDTO>> PostTipoLancamento(TipoLancamentoInsertDTO dto)
         {
-            if (_repo == null)
-            {
-                return Problem("Entity set 'LancamentoContext.TiposLancamentos'  is null.");
-            }
-            var obj = _mapper.Map<TipoLancamento>(dto);
 
-            obj.Ativo = true;
-            obj.DataCriacao = DateTime.Now;
-
-            await _repo.Criar(obj);
-
-            var result = _mapper.Map<TipoLancamentoDTO>(obj);
+            var result = await _service.Criar(dto);
 
             return CreatedAtAction("GetTipoLancamento", new { id = result.Id }, result);
         }
@@ -121,24 +101,14 @@ namespace Lancamento.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTipoLancamento(int id)
         {
-            if (_repo == null)
-            {
-                return NotFound();
-            }
-            var tipoLancamento = await _repo.BuscarPorId(id);
-            if (tipoLancamento == null)
-            {
-                return NotFound();
-            }
-
-            _repo.Deletar(tipoLancamento);
+            await _service.Deletar(id);
 
             return NoContent();
         }
 
         private bool TipoLancamentoExists(int id)
         {
-            return _repo.Exists(id);
+            return _service.Exists(id);
         }
     }
 }
