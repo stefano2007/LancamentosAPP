@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lancamento.Api.Data.Entidades.DTO
+namespace Lancamentos.Api.Data.Entidades.DTO
 {
     public class UsuarioInsertDTO
     {

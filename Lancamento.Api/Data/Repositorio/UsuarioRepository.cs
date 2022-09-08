@@ -1,8 +1,8 @@
-﻿using Lancamento.Api.Data.Entidades;
+﻿using Lancamentos.Api.Data.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace Lancamento.Api.Data.Repositorio
+namespace Lancamentos.Api.Data.Repositorio
 {
     public class UsuarioRepository : IUsuarioRepository
     {
@@ -11,7 +11,7 @@ namespace Lancamento.Api.Data.Repositorio
         {
             _context = context;
         }
-        public async void Atualizar(Usuario entity)
+        public async Task Atualizar(Usuario entity)
         {
             _context.Usuarios.Update(entity);
             await _context.SaveChangesAsync();
@@ -40,16 +40,16 @@ namespace Lancamento.Api.Data.Repositorio
             return entity;
         }
 
-        public bool Deletar(Usuario entity)
+        public async Task<bool> Deletar(Usuario entity)
         {
             _context.Usuarios.Remove(entity);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return _context
+            return await _context
                     .Usuarios
-                    .Any(p => p.Id == id);
+                    .AnyAsync(p => p.Id == id);
         }
     }
 }

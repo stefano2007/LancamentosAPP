@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Lancamento.Api.Data.Entidades
+namespace Lancamentos.Api.Data.Entidades
 {
     [Table("Usuarios")]
     public class Usuario

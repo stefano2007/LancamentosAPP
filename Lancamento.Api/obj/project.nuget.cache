@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "60WYa2zY46rleAefVV6HEh9bvUmJAG+G/Hey1wnAIAB2mlfa/+H9lawHCliDxyE5oj3N/CFn0ewbDvAQLFfMvQ==",
+  "dgSpecHash": "Gt4IOcCdvK52y52h0JCFBx+9XF/YBwiaCqMCLkdbZwjcxUQSPzOIk6+Sazwc9xQLbgCCHLjrQCB158oZw5mT6A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\Lancamento.Api.csproj",
+  "projectFilePath": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\Lancamentos.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stefa\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\stefa\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

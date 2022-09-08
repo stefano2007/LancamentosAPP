@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lancamento.Api.Data.Entidades
+namespace Lancamentos.Api.Data.Entidades
 {
     [Table("TiposLancamentos")]
     public class TipoLancamento

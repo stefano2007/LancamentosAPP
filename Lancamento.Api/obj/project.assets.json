@@ -10159,9 +10159,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\Lancamento.Api.csproj",
-      "projectName": "Lancamento.Api",
-      "projectPath": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\Lancamento.Api.csproj",
+      "projectUniqueName": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\Lancamentos.Api.csproj",
+      "projectName": "Lancamentos.Api",
+      "projectPath": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\Lancamentos.Api.csproj",
       "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\stefa\\source\\repos\\Lancamento.Api\\Lancamento.Api\\obj\\",
       "projectStyle": "PackageReference",

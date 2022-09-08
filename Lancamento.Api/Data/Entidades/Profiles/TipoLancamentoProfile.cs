@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Lancamento.Api.Data.Entidades.DTO;
+using Lancamentos.Api.Data.Entidades.DTO;
 
-namespace Lancamento.Api.Data.Entidades.Profiles
+namespace Lancamentos.Api.Data.Entidades.Profiles
 {
     public class TipoLancamentoProfile : Profile
     {

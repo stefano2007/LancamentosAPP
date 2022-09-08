@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Lancamento.Api.Data.Entidades;
-using Lancamento.Api.Data.Entidades.DTO;
-using Lancamento.Api.Data.Repositorio;
+using Lancamentos.Api.Data.Entidades;
+using Lancamentos.Api.Data.Entidades.DTO;
+using Lancamentos.Api.Data.Repositorio;
 
-namespace Lancamento.Api.Services
+namespace Lancamentos.Api.Services
 {
-    public class TipoLancamentoService //: ITipoLancamentoService
+    public class TipoLancamentoService : ITipoLancamentoService
     {
         private readonly ITipoLancamentoRepository _repo;
         public readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace Lancamento.Api.Services
 
             _mapper.Map<TipoLancamentoUpdateDTO, TipoLancamento>(dto, obj);
 
-            _repo.Atualizar(obj);
+            await _repo.Atualizar(obj);
         }
 
         public async Task<TipoLancamentoDTO> BuscarPorId(int id)
@@ -64,12 +64,12 @@ namespace Lancamento.Api.Services
                 return false;
             }
 
-            return _repo.Deletar(tipoLancamento);
+            return await _repo.Deletar(tipoLancamento);
         }
 
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return _repo.Exists(id);
+            return await _repo.Exists(id);
         }
     }
 }

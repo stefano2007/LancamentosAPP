@@ -1,7 +1,7 @@
-﻿using Lancamento.Api.Data.Entidades;
+﻿using Lancamentos.Api.Data.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lancamento.Api.Data.Repositorio
+namespace Lancamentos.Api.Data.Repositorio
 {
     public class LancamentoRepository : ILancamentoRepository
     {
@@ -10,20 +10,20 @@ namespace Lancamento.Api.Data.Repositorio
         {
             _context = context;
         }
-        public async void Atualizar(ItemLancamento entity)
+        public async Task Atualizar(Entidades.Lancamento entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ItemLancamento> BuscarPorId(int id)
+        public async Task<Entidades.Lancamento> BuscarPorId(int id)
         {
             return await _context
                     .Lancamentos
                     .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<ItemLancamento>> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<Entidades.Lancamento>> BuscatTodos(int limite = 25, int salto = 0)
         {
             return await _context
                     .Lancamentos
@@ -32,23 +32,23 @@ namespace Lancamento.Api.Data.Repositorio
                     .ToListAsync();
         }
 
-        public async Task<ItemLancamento> Criar(ItemLancamento entity)
+        public async Task<Entidades.Lancamento> Criar(Entidades.Lancamento entity)
         {
             _context.Lancamentos.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
-        public bool Deletar(ItemLancamento entity)
+        public async Task<bool> Deletar(Entidades.Lancamento entity)
         {
             _context.Lancamentos.Remove(entity);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return _context
+            return await _context
                     .Lancamentos
-                    .Any(p => p.Id == id);
+                    .AnyAsync(p => p.Id == id);
         }
     }
 }

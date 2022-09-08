@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "KZOzV9jriauTNbExNzST/DL7w57IvaFIOdDkpPBb9Jg=",
-  "Source": "Lancamento.Api",
-  "BasePath": "_content/Lancamento.Api",
+  "Hash": "8THM8RylzyKA8yKmdpeOMP7M9e3Yc1z95/DEMj/bzQE=",
+  "Source": "Lancamentos.Api",
+  "BasePath": "_content/Lancamentos.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

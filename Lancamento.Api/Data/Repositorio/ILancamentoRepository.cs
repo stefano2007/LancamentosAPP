@@ -1,8 +1,8 @@
-﻿using Lancamento.Api.Data.Entidades;
+﻿using Lancamentos.Api.Data.Entidades;
 
-namespace Lancamento.Api.Data.Repositorio
+namespace Lancamentos.Api.Data.Repositorio
 {
-    public interface ILancamentoRepository : IRepository<ItemLancamento>
+    public interface ILancamentoRepository : IRepository<Entidades.Lancamento>
     {
     }
 }

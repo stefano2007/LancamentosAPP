@@ -1,7 +1,7 @@
-﻿using Lancamento.Api.Data.Entidades;
+﻿using Lancamentos.Api.Data.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lancamento.Api.Data.Repositorio
+namespace Lancamentos.Api.Data.Repositorio
 {
     public class TipoLancamentoRepository : ITipoLancamentoRepository
     {
@@ -10,10 +10,10 @@ namespace Lancamento.Api.Data.Repositorio
         {
             _context = context;
         }
-        public void Atualizar(TipoLancamento entity)
+        public async Task Atualizar(TipoLancamento entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<TipoLancamento> BuscarPorId(int id)
@@ -39,18 +39,18 @@ namespace Lancamento.Api.Data.Repositorio
             return entity;
         }
 
-        public bool Deletar(TipoLancamento entity)
+        public async Task<bool> Deletar(TipoLancamento entity)
         {
             _context.TiposLancamentos.Remove(entity);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return _context
+            return await _context
                     .TiposLancamentos
                     .AsNoTracking()
-                    .Any(p => p.Id == id);
+                    .AnyAsync(p => p.Id == id);
         }
     }
 }

@@ -1,7 +1,6 @@
-using Lancamento.Api.Data;
-using Lancamento.Api.Data.Entidades.Profiles;
-using Lancamento.Api.Data.Repositorio;
-using Lancamento.Api.Services;
+using Lancamentos.Api.Data;
+using Lancamentos.Api.Data.Repositorio;
+using Lancamentos.Api.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -17,12 +16,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITipoLancamentoRepository, TipoLancamentoRepository>();
 builder.Services.AddScoped<ILancamentoRepository, LancamentoRepository>();
 
 //services
-builder.Services.AddTransient<TipoLancamentoService>();
+builder.Services.AddTransient<ITipoLancamentoService, TipoLancamentoService>();
+builder.Services.AddTransient<IUsuarioService, UsuarioService>();
+builder.Services.AddTransient<ILancamentoService, LancamentoService>();
 
 builder.Services.AddDbContext<LancamentoContext>(options =>
 {

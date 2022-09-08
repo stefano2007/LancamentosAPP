@@ -1,4 +1,4 @@
-﻿namespace Lancamento.Api.Data.Entidades.DTO
+﻿namespace Lancamentos.Api.Data.Entidades.DTO
 {
     public class UsuarioLoginDTO
     {

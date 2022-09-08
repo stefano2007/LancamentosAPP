@@ -1,122 +1,103 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Lancamentos.Api.Data.Entidades.DTO;
+using Lancamentos.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Lancamento.Api.Data;
-using Lancamento.Api.Data.Entidades;
-using Lancamento.Api.Data.Repositorio;
 
-namespace Lancamento.Api.Controllers
+namespace Lancamentos.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuarioRepository _repo;
+        private readonly IUsuarioService _service;
 
-        public UsuariosController(IUsuarioRepository repo)
+        public UsuariosController(IUsuarioService service)
         {
-            _repo = repo;
+            _service = service;
         }
 
-        // GET: api/TiposLancamentos
+        // GET: api/Usuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetTiposLancamentos()
+        public async Task<ActionResult<IEnumerable<UsuarioDTO>>> GetUsuarios(int limite = 25, int salto = 0)
         {
-            return Ok(await _repo.BuscatTodos());
+            if (limite > 1000)// no maximo 1000 registros por consulta
+            {
+                limite = 1000;
+            }
+            var dtos = await _service.BuscatTodos(limite, salto);
+
+            return Ok(dtos);
         }
 
-        // GET: api/TiposLancamentos/5
+        // GET: api/Usuarios/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<UsuarioDTO>> GetUsuario(int id)
         {
             if (id <= 0)
             {
                 return NotFound();
             }
-            var usuario = await _repo.BuscarPorId(id);
 
-            if (usuario == null)
+            var dto = await _service.BuscarPorId(id);
+
+            if (dto == null)
             {
                 return NotFound();
             }
 
-            return usuario;
+            return dto;
         }
 
-        // PUT: api/TiposLancamentos/5
+        // PUT: api/Usuarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(int id, UsuarioUpdateDTO dto)
         {
-            if (id != usuario.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                if (!UsuarioExists(id))
-                {
-                    return BadRequest();
-                }
-
-                _repo.Atualizar(usuario);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UsuarioExists(id))
+                if (!await UsuarioExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                await _service.Atualizar(dto);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
             }
 
             return NoContent();
         }
 
-        // POST: api/TiposLancamentos
+        // POST: api/Usuarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        public async Task<ActionResult<UsuarioDTO>> PostUsuario(UsuarioInsertDTO dto)
         {
-            if (_repo == null)
-            {
-                return Problem("Entity set 'LancamentoContext.TiposLancamentos'  is null.");
-            }
-            await _repo.Criar(usuario);
 
-            return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+            var result = await _service.Criar(dto);
+
+            return CreatedAtAction("GetUsuario", new { id = result.Id }, result);
         }
 
-        // DELETE: api/TiposLancamentos/5
+        // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
-            if (_repo == null)
-            {
-                return NotFound();
-            }
-            var usuario = await _repo.BuscarPorId(id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            _repo.Deletar(usuario);
+            await _service.Deletar(id);
 
             return NoContent();
         }
 
-        private bool UsuarioExists(int id)
+        private async Task<bool> UsuarioExists(int id)
         {
-            return _repo.Exists(id);
+            return await _service.Exists(id);
         }
     }
 }

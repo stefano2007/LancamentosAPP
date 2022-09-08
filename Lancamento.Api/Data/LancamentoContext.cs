@@ -1,7 +1,7 @@
-﻿using Lancamento.Api.Data.Entidades;
+﻿using Lancamentos.Api.Data.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lancamento.Api.Data
+namespace Lancamentos.Api.Data
 {
     public class LancamentoContext : DbContext
     {
@@ -9,6 +9,6 @@ namespace Lancamento.Api.Data
         }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<TipoLancamento> TiposLancamentos { get; set; }
-        public DbSet<ItemLancamento> Lancamentos { get; set; }
+        public DbSet<Entidades.Lancamento> Lancamentos { get; set; }
     }
 }
