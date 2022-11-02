@@ -10,23 +10,27 @@ namespace Lancamentos.Api.Data.Repositorio
         {
             _context = context;
         }
-        public async Task Atualizar(Entidades.Lancamento entity)
+        public async Task Atualizar(Lancamento entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Entidades.Lancamento> BuscarPorId(int id)
+        public async Task<Lancamento> BuscarPorId(int id)
         {
             return await _context
                     .Lancamentos
+                    .Include(l => l.Usuario)
+                    .Include(l => l.TipoLancamento)
                     .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<Entidades.Lancamento>> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<Lancamento>> BuscatTodos(int limite = 25, int salto = 0)
         {
             return await _context
                     .Lancamentos
+                    .Include(l => l.Usuario)
+                    .Include(l => l.TipoLancamento)
                     .Take(limite)
                     .Skip(salto)
                     .ToListAsync();

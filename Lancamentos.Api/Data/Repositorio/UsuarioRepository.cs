@@ -1,4 +1,5 @@
 ﻿using Lancamentos.Api.Data.Entidades;
+using Lancamentos.Api.Data.Entidades.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -51,5 +52,14 @@ namespace Lancamentos.Api.Data.Repositorio
                     .Usuarios
                     .AnyAsync(p => p.Id == id);
         }
+
+        public async Task<Usuario> GetUsuarioLogin(UsuarioLogin _user)
+        {
+            return await _context
+                    .Usuarios
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Email == _user.Email && u.Senha == _user.Senha);
+        }
+
     }
 }

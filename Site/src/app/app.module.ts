@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { InterceptorModule } from 'src/Interceptors/interceptor.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './app.component';
@@ -31,11 +34,13 @@ import { LancamentosComponent } from './components/lancamentos/lancamentos.compo
     LancamentosComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent},
-      { path: 'tipo-lancamento', component: TipoLancamentoComponent},
+      { path: 'tipo-lancamentos', component: TipoLancamentoComponent},
       { path: 'login/auth', component: LoginComponent},
       { path: 'login/resetpassword', component: ResetPasswordComponent},
       { path: 'login/create', component: CadastraSeComponent},
@@ -47,8 +52,11 @@ import { LancamentosComponent } from './components/lancamentos/lancamentos.compo
 
     ]),
     BsDatepickerModule.forRoot(),
+    InterceptorModule,
   ],
-  providers: [],
+  providers: [
+    FormBuilder,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

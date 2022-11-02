@@ -71,5 +71,18 @@ namespace Lancamentos.Api.Services
         {
             return await _repo.Exists(id);
         }
+
+        public async Task<UsuarioLoginDTO> GetUsuarioLogin(UsuarioLogin _user)
+        {
+            var usuario = await _repo.GetUsuarioLogin(_user);
+
+            var result = _mapper.Map<UsuarioLoginDTO>(usuario);
+            if (result != null)
+            {
+                result.UsuarioId = usuario.Id;
+            }
+
+            return result;
+        }
     }
 }

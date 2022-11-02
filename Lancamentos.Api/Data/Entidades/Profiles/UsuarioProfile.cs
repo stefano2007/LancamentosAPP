@@ -10,6 +10,7 @@ namespace Lancamentos.Api.Data.Entidades.Profiles
             CreateMap<Usuario, UsuarioDTO>().ReverseMap();
             CreateMap<Usuario, UsuarioInsertDTO>().ReverseMap();
             CreateMap<Usuario, UsuarioUpdateDTO>().ReverseMap();
+            CreateMap<Usuario, UsuarioLoginDTO>().ReverseMap();
 
         }
     }

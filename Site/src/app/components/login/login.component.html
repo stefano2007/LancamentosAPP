@@ -4,7 +4,7 @@
       <div class="col-lg-8 login-background"><!-- carrega imagem atraves da class --></div>
       <div class="col-lg-4">
         <div class="text-center mx-5 pt-5">
-          <form>
+          <form [formGroup]="form">
             <img
               class="mb-4"
               src="/assets/img/login.png"
@@ -21,6 +21,7 @@
                 id="floatingInput"
                 placeholder="name@example.com"
                 required
+                formControlName="email"
               />
               <label for="floatingInput">Email</label>
             </div>
@@ -31,6 +32,7 @@
                 id="floatingPassword"
                 placeholder="Password"
                 required
+                formControlName="password"
               />
               <label for="floatingPassword">Senha</label>
             </div>
@@ -43,7 +45,7 @@
             <div class="mb-3">
               <a href="/login/resetpassword">Esqueci minha senha</a>
             </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">
+            <button class="w-100 btn btn-lg btn-primary" (click)="login()">
               Acessar
             </button>
             <p class="mt-5 mb-3 text-muted">© 2022 - Stefano Silva</p>
