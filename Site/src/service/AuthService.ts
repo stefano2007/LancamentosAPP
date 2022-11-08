@@ -32,28 +32,47 @@ export class AuthService {
     const expiresAt = moment(expires);
 
     let token = authResult.token || "";
-    localStorage.setItem('id_token', token);
-    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
-}
+    localStorage.setItem('access_token', token);
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
 
-logout() {
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
-}
+    localStorage.setItem("usuario_logado", JSON.stringify(authResult));
+  }
 
-public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
-}
+  logout() {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("expires_at");
+      localStorage.removeItem("usuario_logado");
+  }
 
-isLoggedOut() {
-    return !this.isLoggedIn();
-}
+  public isLoggedIn() {
+      return moment().isBefore(this.getExpiration()) && this.getToken();
+  }
 
-getExpiration() {
-    const expiration = localStorage.getItem("expires_at")||"";
-    const expiresAt = JSON.parse(expiration);
-    return moment(expiresAt);
-}
+  public getToken():string{
+    return localStorage.getItem("access_token") || "";
+  }
 
+  isLoggedOut() {
+      return !this.isLoggedIn();
+  }
 
+  getExpiration() {
+      const expiration = localStorage.getItem("expires_at")||"0";
+      const expiresAt = JSON.parse(expiration);
+      return moment(expiresAt);
+  }
+
+  getUsuario(): UsuarioLogin{
+    const usuarioLogado = localStorage.getItem("usuario_logado") || "";
+    if(usuarioLogado)
+      return JSON.parse(usuarioLogado)
+
+    return {};
+  }
+
+  getNomeUsuario(): string{
+    let usuarioLogado: UsuarioLogin= this.getUsuario();
+
+    return usuarioLogado.nome || "-";
+  }
 }

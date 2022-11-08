@@ -11,5 +11,7 @@ namespace Lancamentos.Api.Data.Entidades.DTO
 
         [Required(ErrorMessage = "Este campo é obrigatória.")]
         public bool isDespesas { get; set; } = true;
+
+        public string ClassIcone { get; set; }
     }
 }

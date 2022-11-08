@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Lancamentos.Api.Data.Entidades.DTO;
 using Lancamentos.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lancamentos.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LancamentosController : ControllerBase

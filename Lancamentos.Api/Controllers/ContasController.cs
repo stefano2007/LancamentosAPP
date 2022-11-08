@@ -1,6 +1,5 @@
 ﻿using Lancamentos.Api.Data.Entidades.DTO;
 using Lancamentos.Api.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,18 +7,18 @@ namespace Lancamentos.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TiposLancamentosController : ControllerBase
+    public class ContasController : ControllerBase
     {
-        private readonly ITipoLancamentoService _service;
+        private readonly IContaService _service;
 
-        public TiposLancamentosController(ITipoLancamentoService service)
+        public ContasController(IContaService service)
         {
             _service = service;
         }
 
-        // GET: api/TiposLancamentos
+        // GET: api/Contas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TipoLancamentoDTO>>> GetTiposLancamentos(int limite = 25, int salto = 0)
+        public async Task<ActionResult<IEnumerable<ContaDTO>>> GetContas(int limite = 25, int salto = 0)
         {
             if (limite > 1000)// no maximo 1000 registros por consulta
             {
@@ -30,9 +29,9 @@ namespace Lancamentos.Api.Controllers
             return Ok(dtos);
         }
 
-        // GET: api/TiposLancamentos/5
+        // GET: api/Contas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TipoLancamentoDTO>> GetTipoLancamento(int id)
+        public async Task<ActionResult<ContaDTO>> GetConta(int id)
         {
             if (id <= 0)
             {
@@ -49,10 +48,10 @@ namespace Lancamentos.Api.Controllers
             return dto;
         }
 
-        // PUT: api/TiposLancamentos/5
+        // PUT: api/Contas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoLancamento(int id, TipoLancamentoUpdateDTO dto)
+        public async Task<IActionResult> PutConta(int id, ContaUpdateDTO dto)
         {
             if (id != dto.Id)
             {
@@ -61,44 +60,42 @@ namespace Lancamentos.Api.Controllers
 
             try
             {
+                if (!await ContaExists(id))
+                {
+                    return NotFound();
+                }
+
                 await _service.Atualizar(dto);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (! await TipoLancamentoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();
         }
 
-        // POST: api/TiposLancamentos
+        // POST: api/Contas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TipoLancamentoDTO>> PostTipoLancamento(TipoLancamentoInsertDTO dto)
+        public async Task<ActionResult<ContaDTO>> PostConta(ContaInsertDTO dto)
         {
 
             var result = await _service.Criar(dto);
 
-            return CreatedAtAction("GetTipoLancamento", new { id = result.Id }, result);
+            return CreatedAtAction("GetConta", new { id = result.Id }, result);
         }
 
-        // DELETE: api/TiposLancamentos/5
+        // DELETE: api/Contas/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTipoLancamento(int id)
+        public async Task<IActionResult> DeleteConta(int id)
         {
             await _service.Deletar(id);
 
             return NoContent();
         }
 
-        private async Task<bool> TipoLancamentoExists(int id)
+        private async Task<bool> ContaExists(int id)
         {
             return await _service.Exists(id);
         }

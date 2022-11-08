@@ -20,23 +20,24 @@ Create table TiposLancamentos(
   Id Int identity(1, 1) not null,
   Descricao varchar(60) not null,
   Despesa     bit default 1,--despesas ou Ativo
+  ClassIcone       varchar(60),
   DataCriacao datetime default getdate() not null,
   Ativo       bit default 1 not null,
   PRIMARY KEY (Id)
 );
 GO
-Insert into TiposLancamentos(Descricao, Despesa)
-select 'Alimentação' as Descricao, 1 as Despesa
+Insert into TiposLancamentos(Descricao, Despesa, ClassIcone)
+select 'Alimentação' as Descricao, 1 as Despesa, 'fa-solid fa-fork-knife' as ClassIcone
 union all
-select 'Saúde' as Descricao, 1 as Despesa
+select 'Saúde' as Descricao, 1 as Despesa, 'fa-solid fa-heart-pulse' as ClassIcone
 union all
-select 'Casa' as Descricao, 1 as Despesa
+select 'Casa' as Descricao, 1 as Despesa, 'fa-light fa-house-chimney' as ClassIcone
 union all
-select 'Veiculo' as Descricao, 1 as Despesa
+select 'Veiculo' as Descricao, 1 as Despesa, 'fa-regular fa-car-wrench' as ClassIcone
 union all
-select 'Salario' as Descricao, 0 as Despesa
+select 'Salario' as Descricao, 0 as Despesa, 'fa-regular fa-sack-dollar' as ClassIcone
 union all
-select 'Adiantamento' as Descricao, 0 as Despesa
+select 'Adiantamento' as Descricao, 0 as Despesa, 'fa-regular fa-money-bill-1' as ClassIcone
 GO
 CREATE TABLE Lancamentos(
   Id Int identity(1, 1),
@@ -77,3 +78,70 @@ go
 ALTER TABLE Usuarios ALTER COLUMN Email varchar(120) not null
 ALTER TABLE Usuarios ADD Profissao varchar(120)
 ALTER TABLE Usuarios ADD ReceberNoficacoesPorEmail bit not null default 0
+
+--06/11/2022 - Adicionar Conta
+Create table TiposContas(
+  Id Int identity(1, 1) not null,
+  Descricao varchar(60) not null,
+  ClassIcone       varchar(60),
+  DataCriacao datetime default getdate() not null,
+  Ativo       bit default 1 not null,
+  PRIMARY KEY (Id)
+);
+
+GO
+CREATE table Contas(
+  Id        Int identity(1, 1),
+  TipoContaId int not null,
+  UsuarioId   int not null,
+  Nome      varchar(60) not null,  
+  SaldoAtual decimal(15,4) not null,
+  DiaFechamentoFatura int, 
+  DiaVencimentoFatura int,
+  DataCriacao datetime default getdate() not null,
+  Ativo    bit default 1 not null,  
+  PRIMARY KEY (Id),
+  CONSTRAINT FK_TipoContas FOREIGN KEY (TipoContaId) REFERENCES TiposContas(Id),
+  CONSTRAINT FK_UsuariosContas FOREIGN KEY (UsuarioId) REFERENCES Usuarios(Id)
+);
+GO
+
+insert into TiposContas(Descricao)
+select 'Carteira' union
+select 'Conta Corrente' union
+select 'Cartão de Credito' union
+select 'Poupança' union
+select 'Dinheiro' 
+go
+
+ALTER TABLE Lancamentos add ContaId int;
+GO
+ALTER TABLE Lancamentos
+ADD FOREIGN KEY (ContaId) REFERENCES Contas(id);
+GO
+--ALTER TABLE Contas add DiaFechamentoFatura int, DiaVencimentoFatura int
+--go
+
+INSERT INTO Contas(TipoContaId,UsuarioId,Nome,SaldoAtual, DiaFechamentoFatura, DiaVencimentoFatura)
+select TipoContaId = 1,
+       UsuarioId = 1,
+	   Nome = 'Cartão Nubank',
+	   SaldoAtual = 0,
+	   24 as DiaFechamentoFatura, 
+	   1 as DiaVencimentoFatura
+union all
+select TipoContaId = 2,
+       UsuarioId = 1,
+	   Nome = 'NuConta',
+	   SaldoAtual = 10,
+	   null as DiaFechamentoFatura, 
+	   null as DiaVencimentoFatura
+
+
+go
+update a set contaId = 1
+  from Lancamentos a
+
+go
+
+ALTER TABLE Lancamentos alter column ContaId int not null

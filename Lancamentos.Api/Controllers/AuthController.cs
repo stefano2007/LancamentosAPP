@@ -46,7 +46,7 @@ namespace Lancamentos.Api.Controllers
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                     var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    double tempoExpiracaoMinutos = 10;
+                    double tempoExpiracaoMinutos = 120;
 
                     var dateExpires = DateTime.UtcNow.AddMinutes(tempoExpiracaoMinutos);
 
@@ -93,13 +93,11 @@ namespace Lancamentos.Api.Controllers
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
-
         }
 
         private async Task<UsuarioLoginDTO> GetUsuarioLogin(UsuarioLogin _user)
         {
             return await _service.GetUsuarioLogin(_user);
         }
-
     }
 }

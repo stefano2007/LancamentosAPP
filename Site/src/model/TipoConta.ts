@@ -1,12 +1,11 @@
-export class TipoLancamento {
+export class TipoConta {
   id?: number;
   descricao?: string;
-  isDespesas?: boolean;
   classIcone?: string;
   dataCriacao?: Date;
   ativo?: boolean;
 
-  constructor(values: TipoLancamento) {
+  constructor(values: TipoConta) {
       Object.assign(this, values);
   }
 }

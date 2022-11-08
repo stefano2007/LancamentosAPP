@@ -1,3 +1,4 @@
+using Contas.Api.Services;
 using Lancamentos.Api.Data;
 using Lancamentos.Api.Data.Repositorio;
 using Lancamentos.Api.Services;
@@ -11,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 //adicionar Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -39,11 +39,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITipoLancamentoRepository, TipoLancamentoRepository>();
 builder.Services.AddScoped<ILancamentoRepository, LancamentoRepository>();
+builder.Services.AddScoped<ITipoContaRepository, TipoContaRepository>();
+builder.Services.AddScoped<IContaRepository, ContaRepository>();
 
 //services
 builder.Services.AddTransient<ITipoLancamentoService, TipoLancamentoService>();
 builder.Services.AddTransient<IUsuarioService, UsuarioService>();
 builder.Services.AddTransient<ILancamentoService, LancamentoService>();
+builder.Services.AddTransient<ITipoContaService, TipoContaService>();
+builder.Services.AddTransient<IContaService, ContaService>();
 
 builder.Services.AddDbContext<LancamentoContext>(options =>
 {
@@ -54,11 +58,7 @@ builder.Services.AddDbContext<LancamentoContext>(options =>
     }
 });
 
-
-
-
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -80,3 +80,4 @@ app.UseCors(options => options.AllowAnyOrigin()
 app.MapControllers();
 
 app.Run();
+    

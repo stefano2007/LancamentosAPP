@@ -9,6 +9,8 @@ namespace Lancamentos.Api.Data
         }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<TipoLancamento> TiposLancamentos { get; set; }
-        public DbSet<Entidades.Lancamento> Lancamentos { get; set; }
+        public DbSet<Lancamento> Lancamentos { get; set; }
+        public DbSet<TipoConta> TiposContas { get; set; }
+        public DbSet<Conta> Contas { get; set; }
     }
 }

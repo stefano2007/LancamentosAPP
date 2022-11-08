@@ -4,7 +4,11 @@
       <div class="card">
         <h5 class="card-header">{{ lancamento.tipoLancamento?.isDespesas ? 'Despesa':'Lucro' }} - {{ lancamento.tipoLancamento?.descricao  }}</h5>
         <div class="card-body">
-          <h5 class="card-title">{{ lancamento.descricao }}</h5>
+
+          <h5 class="card-title">
+            <i *ngIf="lancamento.tipoLancamento?.classIcone" [ngClass]="lancamento.tipoLancamento?.classIcone"></i>
+            {{ lancamento.descricao }}
+          </h5>
           <p class="card-text {{ lancamento.tipoLancamento?.isDespesas ? 'text-danger':'text-primary'}}">{{ lancamento.valor | currency:"BRL":"symbol" }} | {{ lancamento.data | date: 'dd/MM/yyyy HH:mm' }}</p>
         </div>
       </div>
@@ -13,7 +17,6 @@
 
 </div>
 <!--botão flutante-->
-
 <button class="btn btn-danger align-middle btnFlutuante">
   <i class="fa-solid fa-plus"></i>
 </button>
