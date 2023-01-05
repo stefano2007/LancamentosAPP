@@ -1,3 +1,5 @@
+import { UsuarioLogin } from './../../../model/UsuarioLogin';
+import { Usuario } from './../../../model/Usuario';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/service/AuthService';
@@ -9,11 +11,13 @@ import { AuthService } from 'src/service/AuthService';
 })
 export class NavbarMainComponent implements OnInit {
 
-  usuario:string = 'teste';
-  constructor(private router: Router, private authService: AuthService) { }
+  usuario: UsuarioLogin = {};
+  constructor(private router: Router,
+            private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.usuario = this.authService.getNomeUsuario();
+    this.usuario = this.authService.getUsuario();
+    //console.log('usuario', this.usuario)
   }
 
   estaAutenticado(){
@@ -24,8 +28,9 @@ export class NavbarMainComponent implements OnInit {
     return this.router.url.startsWith('/login');
   }
 
-  logout(){
-    this.authService.logout();
+  async logout(){
+    await this.authService.logout();
+    this.router.navigateByUrl("login/auth");
   }
 
 }

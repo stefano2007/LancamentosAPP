@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TipoLancamento } from 'src/model/TipoLancamento';
 import { TipoLancamentoService } from 'src/service/TipoLancamentoService';
 
@@ -8,6 +8,9 @@ import { TipoLancamentoService } from 'src/service/TipoLancamentoService';
   styleUrls: ['./tipo-lancamento.component.css']
 })
 export class TipoLancamentoComponent implements OnInit {
+
+  @Input()
+  idSelected?: any;
 
   constructor(private _service:TipoLancamentoService) { }
 

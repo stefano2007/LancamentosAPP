@@ -84,5 +84,26 @@ namespace Lancamentos.Api.Services
 
             return result;
         }
+
+        public async Task<UsuarioDTO> UsuarioAlterarSenha(UsuarioAlterarSenha _user)
+        {
+            var usuario = await _repo.BuscarPorId(_user.Id);
+
+            if (usuario != null)
+            {
+                if (usuario.Email != _user.Email || usuario.Senha != _user.SenhaAtual)
+                {
+                    throw new Exception("Não foi possivél localizar o usuario e senha.");
+                }
+
+                usuario.Senha = _user.NovaSenha;
+                await _repo.Atualizar(usuario);
+
+                var result = _mapper.Map<UsuarioDTO>(usuario);
+
+                return result;
+            }
+            throw new Exception("Não foi possivél localizar o usuario e senha.");            
+        }
     }
 }

@@ -1,7 +1,5 @@
-<div class="container bg-white mt-4">
-
-  <p *ngFor="let item of lista"  (click)='BuscarPorId(item.id?.toString() || "")'>
-    <i *ngIf="item.classIcone" [ngClass]="item.classIcone"></i>
-    {{item.id +' - '+ item.descricao}}
-  </p>
-</div>
+<select class="form-select" id="selectTipoLancamento" >
+  <option value="0" selected>Selecione</option>
+  <option *ngFor="let item of lista" [value]="item.id" [selected]="item.id == idSelected">
+    <i *ngIf="item.classIcone" [ngClass]="item.classIcone"></i>{{item.descricao}}</option>
+</select>

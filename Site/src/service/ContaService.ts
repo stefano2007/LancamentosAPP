@@ -36,4 +36,34 @@ export class ContaService {
     }
   }
 
+  async Inserir(conta :Conta){
+    try{
+      const { data } = await axios
+                              .post<Conta>(
+                                `${this._Url}`,
+                                conta
+                              );
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log('error message: ', error);
+      return {};
+    }
+  }
+
+  async Atualizar(id:string, conta :Conta){
+    try{
+      const { data } = await axios
+                              .put<Conta>(
+                                `${this._Url}/${id}`,
+                                conta
+                              );
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log('error message: ', error);
+      return {};
+    }
+  }
+
 }

@@ -24,36 +24,31 @@
             <li class="nav-item">
               <a class="nav-link" aria-current="page" routerLink="lancamentos" routerLinkActive="active">Lancamentos</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" routerLink="tipo-contas" routerLinkActive="active">Tipo Contas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" routerLink="tipo-lancamentos" routerLinkActive="active">Tipo Lancamentos</a>
-            </li>
           </ul>
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-          </form>
 
           <!-- combox de opções do usuario -->
-          <div class="nav-item dropdown">
+          <div *ngIf="estaAutenticado()" class="nav-item dropdown">
             <button type="button" class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle text-white" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
-              <span>{{usuario}}</span>
+              <span>{{usuario.nome}}</span>
             </button>
             <ul class="dropdown-menu">
               <li>
-                  <a class="dropdown-item" routerLink="user/profile"><i class="fa-regular fa-user"></i> Meu perfil</a>
+                  <a class="dropdown-item" [routerLink]="['user/profile', usuario.usuarioId]"><i class="fa-regular fa-user"></i> Meu perfil</a>
               </li>
               <li>
-                  <a class="dropdown-item" href="#"><i class="fa-regular fa-gear"></i> Configurações</a>
+                  <a class="dropdown-item" [routerLink]="['user/edit', usuario.usuarioId]"><i class="fa-regular fa-gear"></i> Configurações</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#"><i class="fa-regular fa-lock-keyhole"></i> Alterar senha</a>
+                <a class="dropdown-item" [routerLink]="['user/password', usuario.usuarioId]"><i class="fa-regular fa-lock-keyhole"></i> Alterar senha</a>
             </li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#" (click)="logout()"><i class="fa-solid fa-person-to-door"></i> Sair</a></li>
             </ul>
           </div>
+
+          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+          </form>
 
           <div *ngIf="!estaAutenticado()" class="text-end">
             <a type="button" class="btn btn-outline-light me-2" routerLink="/login/auth">Login</a>

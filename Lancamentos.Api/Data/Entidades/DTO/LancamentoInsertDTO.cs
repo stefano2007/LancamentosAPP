@@ -9,7 +9,7 @@ namespace Lancamentos.Api.Data.Entidades.DTO
     public class LancamentoInsertDTO
     {
         [Required]
-        public int UsuarioId { get; set; }
+        public int ContaId { get; set; }
         [Required]
         public int TipoLancamentoId { get; set; }        
         [Required]
@@ -19,5 +19,7 @@ namespace Lancamentos.Api.Data.Entidades.DTO
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
         public bool IsLancamentoRecorrente { get; set; } = false;
+        [Required]
+        public int UsuarioId { get; set; }
     }
 }

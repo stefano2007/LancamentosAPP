@@ -1,7 +1,10 @@
+import { Conta } from './Conta';
 import { Usuario } from "./Usuario";
 import { TipoLancamento } from "./TipoLancamento";
 
 export class Lancamento{
+  contaId?:number;
+  conta?:Conta;
   usuarioId?: number;
   usuario?: Usuario;
   id?: number;

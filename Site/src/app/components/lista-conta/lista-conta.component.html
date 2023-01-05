@@ -1,7 +1,6 @@
-<select class="form-select" id="selectTipoConta">
+<select class="form-select" id="selectConta">
   <option value="0" selected>Selecione</option>
   <option *ngFor="let item of lista" [value]="item.id" [selected]="item.id == idSelected">
-    <i *ngIf="item.classIcone" [ngClass]="item.classIcone"></i>
-    {{item.descricao}}
+    {{item.nome}}
   </option>
 </select>

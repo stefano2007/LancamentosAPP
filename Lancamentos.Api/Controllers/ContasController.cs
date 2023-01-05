@@ -20,6 +20,8 @@ namespace Lancamentos.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ContaDTO>>> GetContas(int limite = 25, int salto = 0)
         {
+            //User.Identity.Name;
+
             if (limite > 1000)// no maximo 1000 registros por consulta
             {
                 limite = 1000;

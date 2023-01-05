@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/model/Usuario';
 import { UsuarioService } from 'src/service/UsuarioService';
@@ -9,12 +10,21 @@ import { UsuarioService } from 'src/service/UsuarioService';
 })
 export class UserProfileComponent implements OnInit {
 
-  constructor(private _service: UsuarioService) { }
+  constructor(private _service: UsuarioService,
+            private activatedRoute: ActivatedRoute) { }
 
   usuarioAtual: Usuario = {}
+  id: string = "";
 
   async ngOnInit(): Promise<void> {
-    this.usuarioAtual = await this._service.getFind("1");
+    this.id = this.activatedRoute
+                .snapshot.paramMap.get('id') || "";
+    await this.buscarUsuario();
   }
 
+  async buscarUsuario(){
+    if (this.id){
+      this.usuarioAtual = await this._service.getFind(this.id);
+    }
+  }
 }

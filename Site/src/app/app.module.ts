@@ -1,3 +1,5 @@
+import { ListaContaComponent } from './components/lista-conta/lista-conta.component';
+import { UserPasswordComponent } from './components/user-password/user-password.component';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -35,7 +37,9 @@ import { TipoContaComponent } from './components/tipo-conta/tipo-conta.component
     UserEditComponent,
     LancamentosComponent,
     ContaComponent,
-    TipoContaComponent
+    TipoContaComponent,
+    UserPasswordComponent,
+    ListaContaComponent
   ],
   imports: [
     FormsModule,
@@ -48,8 +52,9 @@ import { TipoContaComponent } from './components/tipo-conta/tipo-conta.component
       { path: 'login/auth', component: LoginComponent},
       { path: 'login/resetpassword', component: ResetPasswordComponent},
       { path: 'login/create', component: CadastraSeComponent},
-      { path: 'user/profile', component: UserProfileComponent, canActivate: [AuthGuard]},
-      { path: 'user/edit', component: UserEditComponent, canActivate: [AuthGuard]},
+      { path: 'user/profile/:id', component: UserProfileComponent, canActivate: [AuthGuard]},
+      { path: 'user/edit/:id', component: UserEditComponent, canActivate: [AuthGuard]},
+      { path: 'user/password/:id', component: UserPasswordComponent, canActivate: [AuthGuard]},
       { path: 'lancamentos', component: LancamentosComponent, canActivate: [AuthGuard]},
       { path: 'tipo-contas', component: TipoContaComponent},
       { path: 'contas', component: ContaComponent, canActivate: [AuthGuard]},

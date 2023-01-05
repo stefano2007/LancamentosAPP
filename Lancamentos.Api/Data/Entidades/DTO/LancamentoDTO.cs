@@ -9,6 +9,9 @@ namespace Lancamentos.Api.Data.Entidades.DTO
         public int UsuarioId { get; set; }
         public virtual UsuarioDTO Usuario { get; set; }
         [Required]
+        public int ContaId { get; set; }
+        public ContaDTO Conta { get; set; }
+        [Required]
         public int TipoLancamentoId { get; set; }        
         public virtual TipoLancamentoDTO  TipoLancamento { get; set; }
         [Required]

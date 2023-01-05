@@ -1,5 +1,5 @@
 import { TipoConta } from './../../../model/TipoConta';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TipoContaService } from 'src/service/TipoContaService';
 
 @Component({
@@ -11,7 +11,16 @@ export class TipoContaComponent implements OnInit {
 
   constructor(private _service:TipoContaService) { }
 
+  @Input()
+  idSelected?: any;
+
+  busca: string = "";
+  somenteAtivo: boolean= false;
+
   lista : TipoConta[] = [];
+  listaFiltro : TipoConta[] = [];
+
+  tipoConta: TipoConta={};
 
   buscando: boolean = false;
 
@@ -23,7 +32,7 @@ export class TipoContaComponent implements OnInit {
   {
     this.buscando = true;
     this.lista = await this._service.getAll();
-    console.log(this.lista);
+    this.listaFiltro = this.lista;
     this.buscando = false;
   }
 
@@ -35,4 +44,11 @@ export class TipoContaComponent implements OnInit {
     this.buscando = false;
   }
 
+  filtroLista(){
+    this.listaFiltro =  this.lista.filter((l) => {
+      return (l.descricao?.toLowerCase()
+              .includes(this.busca.toLowerCase()) || this.busca =="")
+              &&(l.ativo == this.somenteAtivo || !this.somenteAtivo);
+    })
+  }
 }

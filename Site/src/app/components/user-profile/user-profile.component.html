@@ -11,7 +11,9 @@
                 alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
               <h5>{{usuarioAtual.nome}} {{usuarioAtual.sobrenome}}</h5>
               <p>{{usuarioAtual.profissao}}</p>
-              <i class="fa fa-edit mb-5"></i>
+              <a class="btn" [routerLink]="['/user/edit', usuarioAtual.id]">
+                <i class="fa fa-edit"></i>
+              </a>
             </div>
 
             <div class="col-md-8">

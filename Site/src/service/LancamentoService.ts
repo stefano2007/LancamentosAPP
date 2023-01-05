@@ -36,4 +36,35 @@ export class LancamentoService {
     }
   }
 
+  async Inserir(lancamento :Lancamento){
+    console.log("lancamento", lancamento);
+    try{
+      const { data } = await axios
+                              .post<Lancamento>(
+                                `${this._Url}`,
+                                lancamento
+                              );
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log('error message: ', error);
+      return {};
+    }
+  }
+
+  async Atualizar(id:string, lancamento :Lancamento){
+    try{
+      const { data } = await axios
+                              .put<Lancamento>(
+                                `${this._Url}/${id}`,
+                                lancamento
+                              );
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log('error message: ', error);
+      return {};
+    }
+  }
+
 }

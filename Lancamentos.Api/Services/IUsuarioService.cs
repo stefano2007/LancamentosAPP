@@ -6,5 +6,6 @@ namespace Lancamentos.Api.Services
     public interface IUsuarioService : IService<UsuarioDTO, UsuarioInsertDTO, UsuarioUpdateDTO>
     {
         Task<UsuarioLoginDTO> GetUsuarioLogin(UsuarioLogin _user);
+        Task<UsuarioDTO> UsuarioAlterarSenha(UsuarioAlterarSenha _user);
     }
 }

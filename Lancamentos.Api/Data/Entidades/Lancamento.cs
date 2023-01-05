@@ -10,6 +10,9 @@ namespace Lancamentos.Api.Data.Entidades
         [Key]
         public int Id { get; set; }
         [Required]
+        public int ContaId { get; set; }
+        public virtual Conta Conta { get; set; }
+        [Required]
         public int UsuarioId { get; set; }
         public virtual Usuario Usuario { get; set; }
         [Required]

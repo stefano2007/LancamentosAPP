@@ -22,6 +22,7 @@ namespace Lancamentos.Api.Data.Repositorio
                     .Lancamentos
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoLancamento)
+                    .Include(l => l.Conta)
                     .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -31,19 +32,20 @@ namespace Lancamentos.Api.Data.Repositorio
                     .Lancamentos
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoLancamento)
+                    .Include(l => l.Conta)
                     .Take(limite)
                     .Skip(salto)
                     .ToListAsync();
         }
 
-        public async Task<Entidades.Lancamento> Criar(Entidades.Lancamento entity)
+        public async Task<Lancamento> Criar(Lancamento entity)
         {
             _context.Lancamentos.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<bool> Deletar(Entidades.Lancamento entity)
+        public async Task<bool> Deletar(Lancamento entity)
         {
             _context.Lancamentos.Remove(entity);
             return await _context.SaveChangesAsync() > 0;

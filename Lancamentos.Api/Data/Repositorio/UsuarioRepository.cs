@@ -61,5 +61,11 @@ namespace Lancamentos.Api.Data.Repositorio
                     .FirstOrDefaultAsync(u => u.Email == _user.Email && u.Senha == _user.Senha);
         }
 
+        public async Task<Usuario> GetUsuarioByEmail(string email)
+        {
+            return await _context
+                    .Usuarios
+                    .FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

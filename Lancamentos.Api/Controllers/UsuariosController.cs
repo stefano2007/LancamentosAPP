@@ -1,10 +1,13 @@
-﻿using Lancamentos.Api.Data.Entidades.DTO;
+﻿using Lancamentos.Api.Data.Entidades;
+using Lancamentos.Api.Data.Entidades.DTO;
 using Lancamentos.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lancamentos.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
@@ -98,6 +101,14 @@ namespace Lancamentos.Api.Controllers
         private async Task<bool> UsuarioExists(int id)
         {
             return await _service.Exists(id);
+        }
+
+        [HttpPut("{id}/AlterarSenha")]
+        public async Task<UsuarioDTO> AlterarSenhaUsario(int id, [FromBody] UsuarioAlterarSenha _user)
+        {
+            _user.Id = id;
+
+            return await _service.UsuarioAlterarSenha(_user);
         }
     }
 }

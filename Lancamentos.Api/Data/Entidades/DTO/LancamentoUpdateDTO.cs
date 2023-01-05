@@ -6,6 +6,8 @@ namespace Lancamentos.Api.Data.Entidades.DTO
     {
         public int Id { get; set; }
         [Required]
+        public int ContaId { get; set; }
+        [Required]
         public int TipoLancamentoId { get; set; }
         [Required]
         public DateTime Data { get; set; }
