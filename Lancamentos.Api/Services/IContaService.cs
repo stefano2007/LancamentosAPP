@@ -2,7 +2,7 @@
 
 namespace Lancamentos.Api.Services
 {
-    public interface IContaService : IService<ContaDTO, ContaInsertDTO, ContaUpdateDTO>
+    public interface IContaService : IServiceUsuarioLogado<ContaDTO, ContaInsertDTO, ContaUpdateDTO>
     {
     }
 }

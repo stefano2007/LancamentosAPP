@@ -14,27 +14,27 @@ namespace Lancamentos.Api.Services
             _repo = repo;
             _mapper = mapper;
         }
-        public async Task Atualizar(LancamentoUpdateDTO dto)
+        public async Task Atualizar(int usuarioId, LancamentoUpdateDTO dto)
         {
-            var obj = await _repo.BuscarPorId(dto.Id);
+            var obj = await _repo.BuscarPorId(usuarioId, dto.Id);
 
             _mapper.Map<LancamentoUpdateDTO, Lancamento>(dto, obj);
 
-            await _repo.Atualizar(obj);
+            await _repo.Atualizar(usuarioId, obj);
         }
 
-        public async Task<LancamentoDTO> BuscarPorId(int id)
+        public async Task<LancamentoDTO> BuscarPorId(int usuarioId, int id)
         {
-            var Lancamento = await _repo.BuscarPorId(id);
+            var Lancamento = await _repo.BuscarPorId(usuarioId, id);
 
             var dto = _mapper.Map<LancamentoDTO>(Lancamento);
 
             return dto;
         }
 
-        public async Task<IEnumerable<LancamentoDTO>> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<LancamentoDTO>> BuscatTodos(int usuarioId, int limite = 25, int salto = 0)
         {
-            var list = await _repo.BuscatTodos(limite, salto);
+            var list = await _repo.BuscatTodos(usuarioId, limite, salto);
 
             var dtos = _mapper.Map<IEnumerable<LancamentoDTO>>(list);
 
@@ -55,16 +55,16 @@ namespace Lancamentos.Api.Services
             return result;
         }
 
-        public async Task<bool> Deletar(int id)
+        public async Task<bool> Deletar(int usuarioId, int id)
         {
-            Lancamento Lancamento = await _repo.BuscarPorId(id);
+            Lancamento Lancamento = await _repo.BuscarPorId(usuarioId, id);
 
             if (Lancamento == null)
             {
                 return false;
             }
 
-            return await _repo.Deletar(Lancamento);
+            return await _repo.Deletar(usuarioId, Lancamento);
         }
 
         public async Task<bool> Exists(int id)

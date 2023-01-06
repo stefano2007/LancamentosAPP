@@ -23,13 +23,13 @@ namespace Lancamentos.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ContaDTO>>> GetContas(int limite = 25, int salto = 0)
         {
-            var Usuario = User.ConvertToken();
+            var usuarioToken = User.ConvertToken();
 
             if (limite > 1000)// no maximo 1000 registros por consulta
             {
                 limite = 1000;
             }
-            var dtos = await _service.BuscatTodos(limite, salto);
+            var dtos = await _service.BuscatTodos(usuarioToken.UsuarioId, limite, salto);
 
             return Ok(dtos);
         }
@@ -42,8 +42,8 @@ namespace Lancamentos.Api.Controllers
             {
                 return NotFound();
             }
-
-            var dto = await _service.BuscarPorId(id);
+            var usuarioToken = User.ConvertToken();
+            var dto = await _service.BuscarPorId(usuarioToken.UsuarioId, id);
 
             if (dto == null)
             {
@@ -65,12 +65,14 @@ namespace Lancamentos.Api.Controllers
 
             try
             {
+                var usuarioToken = User.ConvertToken();
+
                 if (!await ContaExists(id))
                 {
                     return NotFound();
                 }
 
-                await _service.Atualizar(dto);
+                await _service.Atualizar(usuarioToken.UsuarioId, dto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,7 +87,6 @@ namespace Lancamentos.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ContaDTO>> PostConta(ContaInsertDTO dto)
         {
-
             var result = await _service.Criar(dto);
 
             return CreatedAtAction("GetConta", new { id = result.Id }, result);
@@ -95,7 +96,9 @@ namespace Lancamentos.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteConta(int id)
         {
-            await _service.Deletar(id);
+            var usuarioToken = User.ConvertToken();
+
+            await _service.Deletar(usuarioToken.UsuarioId, id);
 
             return NoContent();
         }

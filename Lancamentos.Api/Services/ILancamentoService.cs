@@ -2,7 +2,7 @@
 
 namespace Lancamentos.Api.Services
 {
-    public interface ILancamentoService : IService<LancamentoDTO, LancamentoInsertDTO, LancamentoUpdateDTO>
+    public interface ILancamentoService : IServiceUsuarioLogado<LancamentoDTO, LancamentoInsertDTO, LancamentoUpdateDTO>
     {
     }
 }

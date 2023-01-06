@@ -27,7 +27,11 @@ namespace Lancamentos.Api.Essenciais
 
         //    return principal;
         //}
-
+        /// <summary>
+        /// Recuperar informações de claims do token enviado pelo client
+        /// </summary>
+        /// <param name="User">Objeto ClaimsPrincipal da requisição</param>
+        /// <returns>Retorna objeto deserializado</returns>
         public static UsuarioToken? ConvertToken(this ClaimsPrincipal User)
         {
             if (!User.Identity.IsAuthenticated)
@@ -43,7 +47,7 @@ namespace Lancamentos.Api.Essenciais
             {
                 UsuarioId = usuarioId,
                 Nome = nome,
-                Email = User.FindFirst(ConfiguracoesGerais.claimEmail)?.Value ?? ""
+                Email = email
             };
         }
     }

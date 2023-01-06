@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Lancamentos.Api.Data.Entidades.DTO;
 using Lancamentos.Api.Services;
 using Microsoft.AspNetCore.Authorization;
+using Lancamentos.Api.Essenciais;
 
 namespace Lancamentos.Api.Controllers
 {
@@ -26,7 +27,9 @@ namespace Lancamentos.Api.Controllers
             {
                 limite = 1000;
             }
-            var dtos = await _service.BuscatTodos(limite, salto);
+            var usuarioToken = User.ConvertToken();
+
+            var dtos = await _service.BuscatTodos(usuarioToken.UsuarioId, limite, salto);
 
             return Ok(dtos);
         }
@@ -39,8 +42,9 @@ namespace Lancamentos.Api.Controllers
             {
                 return NotFound();
             }
+            var usuarioToken = User.ConvertToken();
 
-            var dto = await _service.BuscarPorId(id);
+            var dto = await _service.BuscarPorId(usuarioToken.UsuarioId, id);
 
             if (dto == null)
             {
@@ -66,8 +70,9 @@ namespace Lancamentos.Api.Controllers
                 {
                     return NotFound();
                 }
+                var usuarioToken = User.ConvertToken();
 
-                await _service.Atualizar(dto);
+                await _service.Atualizar(usuarioToken.UsuarioId, dto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -82,7 +87,6 @@ namespace Lancamentos.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<LancamentoDTO>> PostLancamento(LancamentoInsertDTO dto)
         {
-
             var result = await _service.Criar(dto);
 
             return CreatedAtAction("GetLancamento", new { id = result.Id }, result);
@@ -90,9 +94,10 @@ namespace Lancamentos.Api.Controllers
 
         // DELETE: api/Lancamentos/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLancamento(int id)
+        public async Task<IActionResult> DeleteLancamento( int id)
         {
-            await _service.Deletar(id);
+            var usuarioToken = User.ConvertToken();
+            await _service.Deletar(usuarioToken.UsuarioId, id);
 
             return NoContent();
         }
