@@ -1,5 +1,6 @@
 ﻿using Lancamentos.Api.Data.Entidades;
 using Lancamentos.Api.Data.Entidades.DTO;
+using Lancamentos.Api.Essenciais;
 using Lancamentos.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +38,9 @@ namespace Lancamentos.Api.Controllers
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        new Claim("UsuarioId", user.UsuarioId.ToString()),
-                        new Claim("Login", user.Login),
-                        new Claim("Nome", user.Nome),
-                        new Claim("Email", user.Email)
+                        new Claim(ConfiguracoesGerais.claimUsuarioId, user.UsuarioId.ToString()),
+                        new Claim(ConfiguracoesGerais.claimNome, user.Nome),
+                        new Claim(ConfiguracoesGerais.claimEmail, user.Email)
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -60,8 +60,6 @@ namespace Lancamentos.Api.Controllers
                     user.Token = new JwtSecurityTokenHandler().WriteToken(token);
                     user.Expires = dateExpires;
 
-                    var principal = GetPrincipalFromExpiredToken(user.Token);
-
                     return Ok(user);
                 }
                 else
@@ -74,27 +72,6 @@ namespace Lancamentos.Api.Controllers
                 return BadRequest();
             }
         }
-
-        //https://www.c-sharpcorner.com/article/jwt-authentication-with-refresh-tokens-in-net-6-0/
-        private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"])),
-                ValidateLifetime = false
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-
-            return principal;
-        }
-
         private async Task<UsuarioLoginDTO> GetUsuarioLogin(UsuarioLogin _user)
         {
             return await _service.GetUsuarioLogin(_user);

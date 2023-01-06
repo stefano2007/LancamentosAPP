@@ -9,7 +9,6 @@ namespace Lancamentos.Api.Data.Entidades.DTO
         public string Nome { get; set; }
         public string? Sobrenome { get; set; }
         public string Email { get; set; }
-        public string Login { get; set; }
         public DateTime? DataNascimento { get; set; }
         public string? Celular { get; set; }
         public string? Profissao { get; set; }

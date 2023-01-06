@@ -11,25 +11,27 @@ namespace Lancamentos.Api.Data.Repositorio
             _context = context;
         }
 
-        public async Task Atualizar(Conta entity)
+        public async Task Atualizar(int usuarioId, Conta entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Conta> BuscarPorId(int id)
+        public async Task<Conta> BuscarPorId(int usuarioId, int id)
         {
             return await _context
                     .Contas
+                    .Where(x => x.UsuarioId == usuarioId)
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoConta)
                     .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<Conta>> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<Conta>> BuscatTodos(int usuarioId, int limite = 25, int salto = 0)
         {
             return await _context
                     .Contas
+                    .Where(x => x.UsuarioId == usuarioId)
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoConta)
                     .Take(limite)
@@ -44,7 +46,7 @@ namespace Lancamentos.Api.Data.Repositorio
             return entity;
         }
 
-        public async Task<bool> Deletar(Conta entity)
+        public async Task<bool> Deletar(int usuarioId, Conta entity)
         {
             _context.Contas.Remove(entity);
             return await _context.SaveChangesAsync() > 0;

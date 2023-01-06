@@ -1,10 +1,13 @@
 ﻿using Lancamentos.Api.Data.Entidades.DTO;
+using Lancamentos.Api.Essenciais;
 using Lancamentos.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lancamentos.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ContasController : ControllerBase
@@ -20,7 +23,7 @@ namespace Lancamentos.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ContaDTO>>> GetContas(int limite = 25, int salto = 0)
         {
-            //User.Identity.Name;
+            var Usuario = User.ConvertToken();
 
             if (limite > 1000)// no maximo 1000 registros por consulta
             {

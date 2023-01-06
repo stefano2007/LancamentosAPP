@@ -1,6 +1,6 @@
 export class UsuarioLogin {
   email?: string;
-  login?: string;
+  //login?: string;
   nome?: string;
   usuarioId?: number;
   token?: string;

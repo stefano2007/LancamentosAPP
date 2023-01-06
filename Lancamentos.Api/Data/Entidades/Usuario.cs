@@ -18,10 +18,10 @@ namespace Lancamentos.Api.Data.Entidades
         [Required]
         [MaxLength(120)]
         public string Email { get; set; }
-        [Required]
-        [Column("dsLogin"), MinLength(3), MaxLength(60)]
+        //[Required]
+        //[Column("dsLogin"), MinLength(3), MaxLength(60)]
         //[Index("INDEX_LOGIN",  IsUnique = true)]
-        public string Login { get; set; }
+        //public string Login { get; set; }
         [Required]
         [Column("PassLogin"), MinLength(6), MaxLength(15)]
         [JsonIgnore]

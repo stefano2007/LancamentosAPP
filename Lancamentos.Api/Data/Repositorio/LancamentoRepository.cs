@@ -10,26 +10,28 @@ namespace Lancamentos.Api.Data.Repositorio
         {
             _context = context;
         }
-        public async Task Atualizar(Lancamento entity)
+        public async Task Atualizar(int usuarioId, Lancamento entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Lancamento> BuscarPorId(int id)
+        public async Task<Lancamento> BuscarPorId(int usuarioId, int id)
         {
             return await _context
                     .Lancamentos
+                    .Where(x => x.UsuarioId == usuarioId)
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoLancamento)
                     .Include(l => l.Conta)
                     .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<Lancamento>> BuscatTodos(int limite = 25, int salto = 0)
+        public async Task<IEnumerable<Lancamento>> BuscatTodos(int usuarioId, int limite = 25, int salto = 0)
         {
             return await _context
                     .Lancamentos
+                    .Where(x => x.UsuarioId == usuarioId)
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoLancamento)
                     .Include(l => l.Conta)
@@ -45,7 +47,7 @@ namespace Lancamentos.Api.Data.Repositorio
             return entity;
         }
 
-        public async Task<bool> Deletar(Lancamento entity)
+        public async Task<bool> Deletar(int usuarioId, Lancamento entity)
         {
             _context.Lancamentos.Remove(entity);
             return await _context.SaveChangesAsync() > 0;

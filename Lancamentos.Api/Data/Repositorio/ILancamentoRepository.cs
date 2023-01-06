@@ -2,7 +2,7 @@
 
 namespace Lancamentos.Api.Data.Repositorio
 {
-    public interface ILancamentoRepository : IRepository<Entidades.Lancamento>
+    public interface ILancamentoRepository : IRepositoryUsuarioLogado<Lancamento>
     {
     }
 }

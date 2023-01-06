@@ -145,3 +145,6 @@ update a set contaId = 1
 go
 
 ALTER TABLE Lancamentos alter column ContaId int not null
+go
+--05/01/2023 - remover campo login
+ALTER TABLE Usuarios drop column dsLogin
