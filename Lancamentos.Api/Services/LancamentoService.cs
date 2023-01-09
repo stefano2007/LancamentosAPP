@@ -2,6 +2,7 @@
 using Lancamentos.Api.Data.Entidades;
 using Lancamentos.Api.Data.Entidades.DTO;
 using Lancamentos.Api.Data.Repositorio;
+using System.Collections.Generic;
 
 namespace Lancamentos.Api.Services
 {
@@ -70,6 +71,22 @@ namespace Lancamentos.Api.Services
         public async Task<bool> Exists(int id)
         {
             return await _repo.Exists(id);
+        }
+
+        public async Task<IEnumerable<LancamentoDTO>> GetLancamentosPorMesAno(int usuarioId, int mes, int ano)
+        {
+            var lacamentos = await _repo.GetLancamentosPorMesAno(usuarioId, mes, ano);
+            var dtos = _mapper.Map<IEnumerable<LancamentoDTO>>(lacamentos);
+
+            return dtos;
+        }
+
+        public async Task<IEnumerable<LancamentoDTO>> GetLancamentosPorAno(int usuarioId, int ano)
+        {
+            var lacamentos = await _repo.GetLancamentosPorAno(usuarioId, ano);
+            var dtos = _mapper.Map<IEnumerable<LancamentoDTO>>(lacamentos);
+
+            return dtos;
         }
     }
 }

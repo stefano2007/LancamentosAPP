@@ -1,3 +1,4 @@
+import { UsuarioInsert } from 'src/model/UsuarioInsert';
 import { UsuarioRecuperaSenha } from 'src/model/UsuarioRecuperaSenha';
 import { Injectable } from '@angular/core';
 import axios from 'src/infrastructure/http-client';
@@ -52,5 +53,22 @@ export class UsuarioService {
       return {};
     }
   }
+
+  async CriaUsuario(
+        user: UsuarioInsert
+      ):Promise<Usuario> {
+    try{
+    const { data } = await axios
+        .post<Usuario>(
+          `${this._Url}`
+          , user
+        );
+    return data;
+    } catch (error) {
+      console.log('error message: ', error);
+    return {};
+    }
+  }
+
 
 }

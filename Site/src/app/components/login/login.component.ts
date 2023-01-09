@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { timeout } from 'rxjs';
 import { UsuarioLogin } from 'src/model/UsuarioLogin';
 import { AuthService } from 'src/service/AuthService';
 
@@ -41,11 +42,15 @@ export class LoginComponent implements OnInit {
         if(user.usuarioId)
         {
             console.log("User is logged in");
-            if (this.returnUrl){
-              this.router.navigateByUrl(this.returnUrl);
-            }else{
-              this.router.navigateByUrl('/');
-            }
+
+            let returnUrl = this.returnUrl || '/';
+
+            this.router.navigateByUrl(returnUrl).then(
+              ()=>{
+                //apos redirect da reload na pagina pra recarregar as informações do menu
+                window.location.reload();
+              }
+            );
         }
     }
   }

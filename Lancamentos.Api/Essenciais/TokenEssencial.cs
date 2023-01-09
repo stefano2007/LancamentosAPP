@@ -9,24 +9,24 @@ namespace Lancamentos.Api.Essenciais
     public static class TokenEssencial
     {
         //https://www.c-sharpcorner.com/article/jwt-authentication-with-refresh-tokens-in-net-6-0/
-        //private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
-        //{
-        //    var tokenValidationParameters = new TokenValidationParameters
-        //    {
-        //        ValidateAudience = false,
-        //        ValidateIssuer = false,
-        //        ValidateIssuerSigningKey = true,
-        //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"])),
-        //        ValidateLifetime = false
-        //    };
+        private static ClaimsPrincipal? GetPrincipalFromExpiredToken(string token, IConfiguration _configuration)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"])),
+                ValidateLifetime = false
+            };
 
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-        //    if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-        //        throw new SecurityTokenException("Invalid token");
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
 
-        //    return principal;
-        //}
+            return principal;
+        }
         /// <summary>
         /// Recuperar informações de claims do token enviado pelo client
         /// </summary>

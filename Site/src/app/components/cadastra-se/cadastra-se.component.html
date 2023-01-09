@@ -1,7 +1,6 @@
-
 <div class="vh-100">
   <div class="d-flex justify-content-center align-items-center h-100">
-    <form class="container bg-white p-4">
+    <form class="container bg-white p-4" [formGroup]="form">
 
       <div class="row mb-4">
         <div class="col-12">
@@ -13,22 +12,18 @@
       <div class="row form-row">
         <div class="form-group col-md-6">
           <label for="inputEmail">Email</label>
-          <input type="email" class="form-control" id="inputEmail" placeholder="Ex. login123@seuemail.com" required>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="inputLogin">Login</label>
-          <input type="text" class="form-control" id="inputLogin" placeholder="Ex. login123" required>
+          <input type="email" class="form-control" id="inputEmail" placeholder="Ex. login123@seuemail.com" formControlName="email" required>
         </div>
       </div>
 
       <div class="row form-row">
           <div class="form-group col-md-6">
             <label for="inputPassword">Senha</label>
-            <input type="password" class="form-control" id="inputPassword" placeholder="Ex. Password" required>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Ex. Password" formControlName="senha" required>
           </div>
           <div class="form-group col-md-6">
             <label for="inputPasswordConfirm">Confirme Senha</label>
-            <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Ex. Password" required>
+            <input type="password" class="form-control" id="inputPasswordConfirm" placeholder="Ex. Password" formControlName="senhaConfirm" required>
           </div>
       </div>
 
@@ -36,41 +31,41 @@
       <div class="row form-row">
         <div class="form-group col-md-6">
           <label for="inputNome">Nome</label>
-          <input type="text" class="form-control" id="inputNome" placeholder="Ex. Fulano" required>
+          <input type="text" class="form-control" id="inputNome" placeholder="Ex. Fulano" formControlName="nome" required>
         </div>
         <div class="form-group col-md-6">
           <label for="inputSobrenome">Sobrenome</label>
-          <input type="text" class="form-control" id="inputSobrenome" placeholder="Ex. Silva">
+          <input type="text" class="form-control" id="inputSobrenome" placeholder="Ex. Silva" formControlName="sobrenome">
         </div>
       </div>
 
       <div class="row form-row">
         <div class="form-group col-md-6">
           <label for="inputDataNascimento">Data Nascimento</label>
-          <input type="text" class="form-control" id="inputDataNascimento" placeholder="Ex. 01/01/1990">
+          <input type="date" class="form-control" id="inputDataNascimento" placeholder="Ex. 01/01/1990" formControlName="dataNascimento">
         </div>
         <div class="form-group col-md-6">
           <label for="inputCelular">Celular</label>
-          <input type="text" class="form-control" id="inputCelular" placeholder="Ex. 99 91234 5678">
+          <input type="text" class="form-control" id="inputCelular" placeholder="Ex. 99 91234 5678" formControlName="celular">
         </div>
       </div>
 
       <div class="row form-row">
         <div class="form-group col-md-6">
           <label for="inputProfissao">Profissão</label>
-          <input type="text" class="form-control" id="inputProfissao" placeholder="Ex. Profissão">
+          <input type="text" class="form-control" id="inputProfissao" placeholder="Ex. Profissão" formControlName="profissao">
         </div>
       </div>
 
       <div class="form-group py-3">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck">
+          <input class="form-check-input" type="checkbox" id="gridCheck" value="false" formControlName="receberNoficacoesPorEmail">
           <label class="form-check-label" for="gridCheck">
             Aceita receber notificações por e-mail?
           </label>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <button type="submit" class="btn btn-primary" (click)="criarConta()">Cadastrar</button>
     </form>
   </div>
 

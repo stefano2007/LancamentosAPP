@@ -94,7 +94,7 @@ namespace Lancamentos.Api.Controllers
 
         // DELETE: api/Lancamentos/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLancamento( int id)
+        public async Task<IActionResult> DeleteLancamento(int id)
         {
             var usuarioToken = User.ConvertToken();
             await _service.Deletar(usuarioToken.UsuarioId, id);
@@ -106,5 +106,41 @@ namespace Lancamentos.Api.Controllers
         {
             return await _service.Exists(id);
         }
+
+        [HttpGet]
+        [Route("filtro/{ano}/{mes}")]
+        public async Task<ActionResult<IEnumerable<LancamentoDTO>>> GetLancamentosAnoMesAsync(int ano, int mes)
+        {
+            DateTime date = DateTime.Now;
+            if (!DateTime.TryParse($"{ano}-{mes}-01", out date))
+            {
+                return BadRequest("Data Invalida");
+            }
+
+            var usuarioToken = User.ConvertToken();
+
+            var result = await _service.GetLancamentosPorMesAno(usuarioToken.UsuarioId, mes, ano);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("filtro/{ano}")]
+        public async Task<ActionResult<IEnumerable<LancamentoDTO>>> GetLancamentosAnoAsync(int ano)
+        {
+            //validar ano maior que 2000 até de
+            if (ano > 2000 && ano < DateTime.Now.Year + 10)
+            {
+                var usuarioToken = User.ConvertToken();
+
+                var result = await _service.GetLancamentosPorAno(usuarioToken.UsuarioId, ano);
+
+                return Ok(result);
+            }
+
+
+            return BadRequest("Data Invalida");
+        }
+
     }
 }

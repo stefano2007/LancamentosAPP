@@ -58,5 +58,26 @@ namespace Lancamentos.Api.Data.Repositorio
                     .Lancamentos
                     .AnyAsync(p => p.Id == id);
         }
+
+        public async Task<IEnumerable<Lancamento>> GetLancamentosPorMesAno(int usuarioId, int mes, int ano)
+        {
+            return await _context
+                    .Lancamentos
+                    .Where(p => 
+                        p.UsuarioId == usuarioId
+                     && p.Data.Month == mes
+                     && p.Data.Year == ano)
+                    .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Lancamento>> GetLancamentosPorAno(int usuarioId, int ano)
+        {
+            return await _context
+                    .Lancamentos
+                    .Where(p =>
+                        p.UsuarioId == usuarioId
+                     && p.Data.Year == ano)
+                    .ToListAsync();
+        }
     }
 }

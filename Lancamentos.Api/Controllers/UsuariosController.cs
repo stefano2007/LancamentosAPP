@@ -81,6 +81,7 @@ namespace Lancamentos.Api.Controllers
         // POST: api/Usuarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<UsuarioDTO>> PostUsuario(UsuarioInsertDTO dto)
         {
 

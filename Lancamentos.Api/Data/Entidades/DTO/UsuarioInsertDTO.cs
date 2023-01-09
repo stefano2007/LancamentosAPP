@@ -12,6 +12,7 @@ namespace Lancamentos.Api.Data.Entidades.DTO
         [Required]
         [MaxLength(120)]
         public string Email { get; set; }
+        public string Senha { get; set; }
         public DateTime? DataNascimento { get; set; }
         public string? Celular { get; set; }
         public string? Profissao { get; set; }
