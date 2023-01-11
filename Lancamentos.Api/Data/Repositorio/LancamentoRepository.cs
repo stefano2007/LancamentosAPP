@@ -35,6 +35,7 @@ namespace Lancamentos.Api.Data.Repositorio
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoLancamento)
                     .Include(l => l.Conta)
+                    .AsNoTracking()
                     .Take(limite)
                     .Skip(salto)
                     .ToListAsync();

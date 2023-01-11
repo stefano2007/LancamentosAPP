@@ -34,6 +34,7 @@ namespace Lancamentos.Api.Data.Repositorio
                     .Where(x => x.UsuarioId == usuarioId)
                     .Include(l => l.Usuario)
                     .Include(l => l.TipoConta)
+                    .AsNoTracking()
                     .Take(limite)
                     .Skip(salto)
                     .ToListAsync();

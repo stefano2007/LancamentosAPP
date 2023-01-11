@@ -27,6 +27,7 @@ namespace Lancamentos.Api.Data.Repositorio
         {
             return await _context
                     .TiposLancamentos
+                    .AsNoTracking()
                     .Take(limite)
                     .Skip(salto)
                     .ToListAsync();

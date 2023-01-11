@@ -102,7 +102,7 @@ namespace Lancamentos.Api.Controllers
 
             return NoContent();
         }
-
+        
         private async Task<bool> ContaExists(int id)
         {
             return await _service.Exists(id);

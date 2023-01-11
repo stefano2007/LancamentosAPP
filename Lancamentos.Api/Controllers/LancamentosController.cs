@@ -102,6 +102,30 @@ namespace Lancamentos.Api.Controllers
             return NoContent();
         }
 
+        // POST: api/Lancamento/qtd
+        [HttpPost("{qtd}")]
+        public async Task<ActionResult<IEnumerable<LancamentoDTO>>> PostLancamentosRecorrente(LancamentoInsertDTO dto, int qtd)
+        {
+            if (qtd > 0 && qtd < 100)
+            {
+                var dtoFor = dto;
+                dtoFor.IsLancamentoRecorrente = true;
+
+                List<LancamentoDTO> lista = new List<LancamentoDTO>();
+
+                for (int i = 0; i < qtd; i++)
+                {
+                    dtoFor.Data = dtoFor.Data.AddMonths(1);
+                    var result = await _service.Criar(dto);
+                    lista.Add(result);
+                }
+                return Ok(lista);
+            }
+
+            return BadRequest("Quantidade de vezes invalida");
+        }
+
+
         private async Task<bool> LancamentoExists(int id)
         {
             return await _service.Exists(id);

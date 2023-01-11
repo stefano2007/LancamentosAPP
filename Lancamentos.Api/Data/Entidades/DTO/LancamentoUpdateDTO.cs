@@ -16,6 +16,5 @@ namespace Lancamentos.Api.Data.Entidades.DTO
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
         public bool IsLancamentoRecorrente { get; set; } = false;
-        public bool Ativo { get; set; }
     }
 }
