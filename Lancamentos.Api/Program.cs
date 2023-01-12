@@ -1,4 +1,6 @@
 using Contas.Api.Services;
+using Hangfire;
+using Lancamentos.Api.Configuracoes;
 using Lancamentos.Api.Data;
 using Lancamentos.Api.Data.Repositorio;
 using Lancamentos.Api.Services;
@@ -59,36 +61,9 @@ builder.Services.AddDbContext<LancamentoContext>(options =>
         options.LogTo((s) => Debug.Write(s), LogLevel.Information);
     }
 });
-#region configurações swagger
-builder.Services.AddSwaggerGen(option =>
-{
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Lancamentos API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
 
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
-#endregion
+builder.Services.RegisterSwagger();
+builder.Services.RegisterHangfire(builder.Configuration);
 
 var app = builder.Build();
 
@@ -97,6 +72,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHangfireDashboard();
 }
 
 app.UseHttpsRedirection();
@@ -110,6 +86,9 @@ app.UseCors(options => options.AllowAnyOrigin()
                         .AllowAnyHeader());
 
 app.MapControllers();
-
+/*
+BackgroundJob.Schedule(
+    () => Console.WriteLine("Job Delayed: 5 segundos após o início da aplicação"),
+    TimeSpan.FromSeconds(5));   
+*/
 app.Run();
-    
