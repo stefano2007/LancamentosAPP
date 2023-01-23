@@ -456,3 +456,6 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 .vs/*
+
+#Ignora appsetting.production
+Lancamentos.Api/appsettings.Production.json

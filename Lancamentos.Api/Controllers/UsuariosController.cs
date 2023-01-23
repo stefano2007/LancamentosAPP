@@ -21,7 +21,7 @@ namespace Lancamentos.Api.Controllers
 
         // GET: api/Usuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioDTO>>> GetUsuarios(int limite = 25, int salto = 0)
+        public async Task<ActionResult<IEnumerable<UsuarioDTO>>> GetUsuarios(int limite = 100, int salto = 0)
         {
             if (limite > 1000)// no maximo 1000 registros por consulta
             {

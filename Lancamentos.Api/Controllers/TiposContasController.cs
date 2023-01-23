@@ -19,7 +19,7 @@ namespace Contas.Api.Controllers
 
         // GET: api/TiposContas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TipoContaDTO>>> GetTiposContas(int limite = 25, int salto = 0)
+        public async Task<ActionResult<IEnumerable<TipoContaDTO>>> GetTiposContas(int limite = 100, int salto = 0)
         {
             if (limite > 1000)// no maximo 1000 registros por consulta
             {

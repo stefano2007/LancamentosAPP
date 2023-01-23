@@ -21,7 +21,7 @@ namespace Lancamentos.Api.Controllers
 
         // GET: api/Contas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContaDTO>>> GetContas(int limite = 25, int salto = 0)
+        public async Task<ActionResult<IEnumerable<ContaDTO>>> GetContas(int limite = 100, int salto = 0)
         {
             var usuarioToken = User.ConvertToken();
 

@@ -21,7 +21,7 @@ namespace Lancamentos.Api.Controllers
 
         // GET: api/Lancamentos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LancamentoDTO>>> GetLancamentos(int limite = 25, int salto = 0)
+        public async Task<ActionResult<IEnumerable<LancamentoDTO>>> GetLancamentos(int limite = 100, int salto = 0)
         {
             if (limite > 1000)// no maximo 1000 registros por consulta
             {
@@ -161,7 +161,6 @@ namespace Lancamentos.Api.Controllers
 
                 return Ok(result);
             }
-
 
             return BadRequest("Data Invalida");
         }
